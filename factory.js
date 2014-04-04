@@ -1,3 +1,24 @@
+/**
+    A factory for the RDB based DAO classes
+    <pre>
+
+    Domain:
+        commands {RDBCommandStore}
+        game {RDBGameStore}
+        user {RDBUserStore}
+
+    Invariants:
+        INVARIANT: none
+
+    Constructor Specification:
+        PRE: none
+        POST: none
+    </pre>
+
+    @class Deck
+    @constructor    
+*/
+
 var _ = require("underscore"),
 	commands = require("./lib/RDBCommandStore"),
 	game = require("./lib/RDBGameStore"),
