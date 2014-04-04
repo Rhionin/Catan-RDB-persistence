@@ -3,9 +3,9 @@ var _ = require("underscore"),
 	game = require("./lib/RDBGameStore"),
 	user = require("./lib/RDBUserStore");
 
-var commandStore = new commands.TextCommandStore();
-var gameStore = new game.TextGameStore();
-var userStore = new user.TextUserStore();
+var commandStore = new commands.RDBCommandStore();
+var gameStore = new game.RDBGameStore();
+var userStore = new user.RDBUserStore();
 
 _.extend(exports, {
 	getCommandStore: function()
