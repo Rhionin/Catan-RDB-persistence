@@ -1,20 +1,21 @@
 {
-	"name": "catan-relational-persistence",
-	"version": "0.0.1",
-	"description": "A relational persistence plugin for the settlers-of-catan game for BYU CS340",
-	"main": "factory.js",
-	"private": true,
-	"scripts": {
-		"test": "mocha --reporter spec test/*.js"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/Rhionin/Catan-RDB-persistence.git"
-	},
-	"dependencies": {
-		"underscore": "1.x"
-	},
-	"devDependencies": {
-		"mocha": "1.x"
-	}
+  "name": "catan-relational-persistence",
+  "version": "0.0.1",
+  "description": "A relational persistence plugin for the settlers-of-catan game for BYU CS340",
+  "main": "factory.js",
+  "private": true,
+  "scripts": {
+    "test": "mocha --reporter spec test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Rhionin/Catan-RDB-persistence.git"
+  },
+  "dependencies": {
+    "underscore": "1.x",
+    "sqlite3": "~2.2.0"
+  },
+  "devDependencies": {
+    "mocha": "1.x"
+  }
 }
