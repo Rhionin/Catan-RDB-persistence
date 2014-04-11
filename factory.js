@@ -27,7 +27,7 @@ var _ = require("underscore"),
 
 var database = __dirname + "/data/catan.sqlite";
 
-var commandStore = new commands.RDBCommandStore();
+var commandStore = new commands.RDBCommandStore(database);
 var gameStore = new game.RDBGameStore(database, "Games", "Checkpoints");
 var userStore = new user.RDBUserStore(database);
 
