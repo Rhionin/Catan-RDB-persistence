@@ -122,6 +122,7 @@ describe("RDB Game Store", function() {
 	it('Initialize with no games', function(done) {
 
 		var gameStore = new RDBGameStore.RDBGameStore(database, tableName, checkpointTable);
+		gameStore.setLogging(false);
 
 		gameStore.initialize(function(models){
 
@@ -135,6 +136,7 @@ describe("RDB Game Store", function() {
 	it('Initialize with games', function(done) {
 
 		var gameStore = new RDBGameStore.RDBGameStore(database, tableName, checkpointTable);
+		gameStore.setLogging(false);
 
 		gameStore.addGame({id:0,title:"Game1",model:{some:"stuff",goes:"here"}}, function(id){
 
