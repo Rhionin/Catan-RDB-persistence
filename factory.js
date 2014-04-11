@@ -22,9 +22,10 @@
 var _ = require("underscore"),
 	commands = require("./lib/RDBCommandStore"),
 	game = require("./lib/RDBGameStore"),
-	user = require("./lib/RDBUserStore");
+	user = require("./lib/RDBUserStore"),
+	fse = require("fs-extra");
 
-var commandStore = new commands.RDBCommandStore();
+var commandStore = new commands.RDBCommandStore("data/catan.sqlite", "Games", "Checkpoints");
 var gameStore = new game.RDBGameStore();
 var userStore = new user.RDBUserStore();
 
@@ -81,5 +82,22 @@ _.extend(exports, {
 	getUserStore: function()
 	{
 		return userStore;
+	},
+
+	clean: function()
+	{
+		fse.unlink('data/catan.sqlite', function (err) {
+			if (err) throw err;
+
+			console.log("\tRDB:\tDeleted 'catan.sqlite'");
+
+			fs.copy('data/catan-empty.sqlite', 'data/catan.sqlite', function(err){
+				if (err) return console.error(err);
+
+				console.log("\tRDB\tcopied 'catan-emtpy.sqlite' to 'catan.sqlite'");
+
+			});
+
+		});
 	}
 });
