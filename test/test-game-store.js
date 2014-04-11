@@ -14,9 +14,10 @@ describe("RDB Game Store", function() {
 
 		gameStore.addGame({id:0,title:"hello",model:{some:"stuff",goes:"here"}}, function(id){
 			assert.notEqual(id, "undefined");
-			gameStore.removeGame(id);
-			gameStore.close();
-			done();
+			gameStore.removeGame(id, function(){
+				gameStore.close();
+				done();
+			});
 		});
 
 	});
@@ -31,9 +32,10 @@ describe("RDB Game Store", function() {
 				assert.equal(game.title, "Tyson's Game");
 				assert.equal(game.model.some, "stuff");
 				assert.equal(game.model.goes, "here");
-				gameStore.removeGame(id);
-				gameStore.close();
-				done();
+				gameStore.removeGame(id, function(){
+					gameStore.close();
+					done();
+				});
 			});
 		});
 
@@ -67,8 +69,10 @@ describe("RDB Game Store", function() {
 
 					assert.equal(game.id, 1);
 					assert.equal(game.title, "helloagain");
-					gameStore.removeGame(id);
-					done();
+					gameStore.removeGame(id, function(){
+						gameStore.close();
+						done();
+					});
 
 				});
 
@@ -81,15 +85,26 @@ describe("RDB Game Store", function() {
 
 		var gameStore = new RDBGameStore.RDBGameStore(database, tableName, checkpointTable);
 
-		assert.ok(false, "Test not build yet");
+		gameStore.addGame({id:0,title:"hello",model:{some:"stuff",goes:"here"}}, function(id){
+			gameStore.addCheckpoint(id, {id:0,title:"checkpoint1",model:{some:"stuff",goes:"here"}}, function(checkpointId){
+
+				assert.equal(typeof checkpointId, "number");
+
+				gameStore.removeGame(id, function(){
+					gameStore.close();
+					done();	
+				});
+			});
+		});
 
 	});
 
 	it('Get a checkpoint', function(done) {
 
 		var gameStore = new RDBGameStore.RDBGameStore(database, tableName, checkpointTable);
+		gameStore.close();
 
-		assert.ok(false, "Test not build yet");
+		assert.ok(false, "Test not built yet");
 
 	});
 
@@ -101,6 +116,7 @@ describe("RDB Game Store", function() {
 		gameStore.initialize(function(models){
 
 			assert.equal(models.length, 0);
+			gameStore.close();
 			done();
 		});
 
@@ -128,6 +144,7 @@ describe("RDB Game Store", function() {
 
 					gameStore.removeGame(id1, function(){
 						gameStore.removeGame(id2, function(){
+							gameStore.close();
 							done();
 						});
 					});
