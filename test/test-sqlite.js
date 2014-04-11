@@ -10,9 +10,15 @@ describe("Sqlite interface", function() {
 
 	var rdb = new sqlite.sqlite("data/catan-test.sqlite");
 
-	it('Insert into the database', function() {
+	it('Insert into the database', function(done) {
 
-	    rdb.insert("Users", ["username", "password"], ["tyson2", "tysonpassword"]);
+		var callback = function(lastID)
+		{
+			assert.notEqual("undefined", lastID);
+			done();
+		};
+
+	    rdb.insert("Users", ["username", "password"], ["tyson2", "tysonpassword"], callback);
 
 	});
 
@@ -35,8 +41,11 @@ describe("Sqlite interface", function() {
 
 	it('Delete a row in the database', function(done) {
 
-	    rdb.del("Users", {username:"tyson3"});
-	    rdb.select("Users", {username:"tyson3"}, ["id","username", "password"], function(response){
+		rdb.insert("Users", ["username", "password"], ["tysondelete", "tysonpassword"], function(){});
+	    rdb.del("Users", {username:"tysondelete"}, function(rowsDeleted){
+	    	assert.equal(rowsDeleted, 1);
+	    });
+	    rdb.select("Users", {username:"tysondelete"}, ["id","username", "password"], function(response){
 	    	assert.equal(response.length, 0);
 	    	done(); 
 	    });
