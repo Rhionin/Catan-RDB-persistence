@@ -84,18 +84,16 @@ _.extend(exports, {
 		return userStore;
 	},
 
-	clean: function()
+	clean: function(callback)
 	{
 		fse.unlink('data/catan.sqlite', function (err) {
 			if (err) throw err;
 
-			console.log("\tRDB:\tDeleted 'catan.sqlite'");
-
-			fs.copy('data/catan-empty.sqlite', 'data/catan.sqlite', function(err){
+			fse.copy('data/catan-empty.sqlite', 'data/catan.sqlite', function(err){
 				if (err) return console.error(err);
 
-				console.log("\tRDB\tcopied 'catan-emtpy.sqlite' to 'catan.sqlite'");
-
+				if(callback) 
+					callback();
 			});
 
 		});
