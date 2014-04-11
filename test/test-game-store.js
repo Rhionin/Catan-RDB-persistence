@@ -28,7 +28,7 @@ describe("RDB Game Store", function() {
 
 		gameStore.addGame({id:0,title:"Tyson's Game",model:{some:"stuff",goes:"here"}}, function(id){
 			gameStore.getGame(id, function(game){
-				assert.equal(game.id, 0);
+				assert.equal(game.id, id);
 				assert.equal(game.title, "Tyson's Game");
 				assert.equal(game.model.some, "stuff");
 				assert.equal(game.model.goes, "here");
