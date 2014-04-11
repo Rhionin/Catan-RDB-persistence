@@ -102,9 +102,20 @@ describe("RDB Game Store", function() {
 	it('Get a checkpoint', function(done) {
 
 		var gameStore = new RDBGameStore.RDBGameStore(database, tableName, checkpointTable);
-		gameStore.close();
 
-		assert.ok(false, "Test not built yet");
+		gameStore.addGame({id:0,title:"hello",model:{some:"stuff",goes:"here"}}, function(id){
+			gameStore.addCheckpoint(id, {id:0,title:"checkpoint1",model:{some:"stuff",goes:"here"}}, function(checkid){
+				gameStore.addCheckpoint(id, {id:0,title:"checkpoint2",model:{some:"stuff",goes:"here"}}, function(checkid2){
+					gameStore.getCheckpoint(id, function(checkpoint){
+						assert.equal(checkpoint.title, "checkpoint2");
+						gameStore.removeGame(id, function(){
+							gameStore.close();
+							done();	
+						});
+					});
+				});
+			});
+		});
 
 	});
 
@@ -112,7 +123,6 @@ describe("RDB Game Store", function() {
 
 		var gameStore = new RDBGameStore.RDBGameStore(database, tableName, checkpointTable);
 
-		// Test without any games in the database
 		gameStore.initialize(function(models){
 
 			assert.equal(models.length, 0);
@@ -126,8 +136,6 @@ describe("RDB Game Store", function() {
 
 		var gameStore = new RDBGameStore.RDBGameStore(database, tableName, checkpointTable);
 
-
-		// Test with some games
 		gameStore.addGame({id:0,title:"Game1",model:{some:"stuff",goes:"here"}}, function(id){
 
 			var id1 = id;
