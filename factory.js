@@ -26,7 +26,7 @@ var _ = require("underscore"),
 	fse = require("fs-extra");
 
 var commandStore = new commands.RDBCommandStore();
-var gameStore = new game.RDBGameStore(__dirname + "data/catan.sqlite", "Games", "Checkpoints");
+var gameStore = new game.RDBGameStore(__dirname + "/data/catan.sqlite", "Games", "Checkpoints");
 var userStore = new user.RDBUserStore();
 
 _.extend(exports, {
