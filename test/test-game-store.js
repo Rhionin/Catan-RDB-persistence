@@ -1,5 +1,6 @@
 var assert = require('assert');
 var RDBGameStore = require('../lib/RDBGameStore.js');
+var fse = require ("fs-extra");
 var _ = require('underscore');
 
 var tableName = "Games";
@@ -7,6 +8,19 @@ var checkpointTable = "Checkpoints";
 var database = "data/catan-test.sqlite";
 
 describe("RDB Game Store", function() {
+
+	before(function(done) {
+		fse.unlink('data/catan-test.sqlite', function (err) {
+			if (err) throw err;
+
+			fse.copy('data/catan-empty.sqlite', 'data/catan-test.sqlite', function(err){
+				if (err) return console.error(err);
+
+				done();
+			});
+
+		});
+	});
 
 	it('Add a game', function(done) {
 
