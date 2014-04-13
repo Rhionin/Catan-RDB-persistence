@@ -61,13 +61,11 @@ describe("RDB Game Store", function() {
 		var gameStore = new RDBGameStore.RDBGameStore(database, tableName, checkpointTable);
 
 		gameStore.addGame({id:0,title:"hello",model:{some:"stuff",goes:"here"}}, function(id){
-			gameStore.updateGame({id:1,title:"helloagain",model:{some:"stuff",goes:"here"}}, id, function(changes){
-
-				assert.equal(changes, 1);
+			gameStore.updateGame({id:id,title:"helloagain",model:{some:"stuff",goes:"here"}}, function(changes){
 
 				gameStore.getGame(id, function(game){
 
-					assert.equal(game.id, 1);
+					assert.equal(game.id, id);
 					assert.equal(game.title, "helloagain");
 					gameStore.removeGame(id, function(){
 						gameStore.close();
