@@ -131,6 +131,22 @@ describe("RDB Game Store", function() {
 
 	});
 
+	it('Get a checkpoint if no checkpoint exists', function(done) {
+
+		var gameStore = new RDBGameStore.RDBGameStore(database, tableName, checkpointTable);
+
+		gameStore.addGame({id:0,title:"hello",model:{some:"stuff",goes:"here"}}, function(id){
+			gameStore.getGame(id, false, function(checkpoint){
+				assert.equal(checkpoint.title, "hello");
+				gameStore.removeGame(id, function(){
+					gameStore.close();
+					done();	
+				});
+			});
+		});
+
+	});
+
 	it('Initialize with no games', function(done) {
 
 		var gameStore = new RDBGameStore.RDBGameStore(database, tableName, checkpointTable);
