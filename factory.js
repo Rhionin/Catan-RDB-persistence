@@ -88,10 +88,10 @@ _.extend(exports, {
 
 	clean: function(callback)
 	{
-		fse.unlink('data/catan.sqlite', function (err) {
+		fse.unlink(__dirname + '/data/catan.sqlite', function (err) {
 			if (err) throw err;
 
-			fse.copy('data/catan-empty.sqlite', 'data/catan.sqlite', function(err){
+			fse.copy(__dirname + '/data/catan-empty.sqlite', __dirname + '/data/catan.sqlite', function(err){
 				if (err) return console.error(err);
 
 				if(callback) 
