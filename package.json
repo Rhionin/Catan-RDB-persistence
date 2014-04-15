@@ -1,6 +1,6 @@
 {
   "name": "catan-relational-persistence",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "A relational persistence plugin for the settlers-of-catan game for BYU CS340",
   "main": "factory.js",
   "private": true,
