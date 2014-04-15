@@ -1,5 +1,6 @@
 var assert = require('assert');
 var RDBGameStore = require('../lib/RDBGameStore.js');
+var fse = require ("fs-extra");
 var _ = require('underscore');
 
 var tableName = "Games";
@@ -7,6 +8,19 @@ var checkpointTable = "Checkpoints";
 var database = "data/catan-test.sqlite";
 
 describe("RDB Game Store", function() {
+
+	before(function(done) {
+		fse.unlink('data/catan-test.sqlite', function (err) {
+			if (err) throw err;
+
+			fse.copy('data/catan-empty.sqlite', 'data/catan-test.sqlite', function(err){
+				if (err) return console.error(err);
+
+				done();
+			});
+
+		});
+	});
 
 	it('Add a game', function(done) {
 
@@ -61,13 +75,11 @@ describe("RDB Game Store", function() {
 		var gameStore = new RDBGameStore.RDBGameStore(database, tableName, checkpointTable);
 
 		gameStore.addGame({id:0,title:"hello",model:{some:"stuff",goes:"here"}}, function(id){
-			gameStore.updateGame({id:1,title:"helloagain",model:{some:"stuff",goes:"here"}}, id, function(changes){
-
-				assert.equal(changes, 1);
+			gameStore.updateGame({id:id,title:"helloagain",model:{some:"stuff",goes:"here"}}, function(changes){
 
 				gameStore.getGame(id, function(game){
 
-					assert.equal(game.id, 1);
+					assert.equal(game.id, id);
 					assert.equal(game.title, "helloagain");
 					gameStore.removeGame(id, function(){
 						gameStore.close();
@@ -113,6 +125,22 @@ describe("RDB Game Store", function() {
 							done();	
 						});
 					});
+				});
+			});
+		});
+
+	});
+
+	it('Get a checkpoint if no checkpoint exists', function(done) {
+
+		var gameStore = new RDBGameStore.RDBGameStore(database, tableName, checkpointTable);
+
+		gameStore.addGame({id:0,title:"hello",model:{some:"stuff",goes:"here"}}, function(id){
+			gameStore.getGame(id, false, function(checkpoint){
+				assert.equal(checkpoint.title, "hello");
+				gameStore.removeGame(id, function(){
+					gameStore.close();
+					done();	
 				});
 			});
 		});
