@@ -192,5 +192,27 @@ describe("RDB Game Store", function() {
 		});
 	});
 
+	it('Initialize with games that have checkpoints', function(done) {
+
+		var gameStore = new RDBGameStore.RDBGameStore(database, tableName, checkpointTable);
+		gameStore.setLogging(false);
+
+		gameStore.addGame({id:0,title:"hello",model:{some:"stuff",goes:"here"}}, function(id){
+			gameStore.addCheckpoint(id, {id:0,title:"checkpoint1",model:{some:"stuff",goes:"here"}}, function(checkid){
+				gameStore.addCheckpoint(id, {id:0,title:"checkpoint2",model:{some:"stuff",goes:"here"}}, function(checkid2){
+					gameStore.initialize(function(models){
+
+						assert.equal(models[0].title, "checkpoint2");
+						gameStore.removeGame(id, function(){
+							gameStore.close();
+							done();
+						});
+						
+					});
+				});
+			});
+		});
+	});
+
 
 });
